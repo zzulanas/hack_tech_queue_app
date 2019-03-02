@@ -1,28 +1,15 @@
-import React from "react";
-import { View, Text } from "react-native";
-import { createStackNavigator, createAppContainer } from "react-navigation";
-import { Button } from "react-native-elements";
-import { Restaurant } from "./components/Restaurant";
-
+import React from 'react';
+import { View, Text } from 'react-native';
+import { Button } from 'react-native-elements';
+import Restaurant from './components/Restaurant';
+import Qr from './components/qr';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Button title="login" onPress={() => this.props.navigation.navigate('Details')}/>
-      </View>
-    );
-  }
-}
-
-class DetailsScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Details Screen</Text>
-        <Restaurant name="Blaze Pizza"/>
-        <Restaurant name="Taco Bell"/>
-        <Restaurant name="Panera"/>
       </View>
     );
   }
@@ -42,11 +29,25 @@ class ModalScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+        <Text style={{ fontSize: 30 }}>This is a your check in!</Text>
+        <Qr text="jhfalskdhflksadfsadf"/>
         <Button
           onPress={() => this.props.navigation.goBack()}
-          title="Dismiss"
+          title="Exit Queue"
         />
+      </View>
+    );
+  }
+}
+
+class DetailsScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Details Screen</Text>
+        <Restaurant navigation={this.props.navigation} name="Blaze Pizza"/>
+        <Restaurant navigation={this.props.navigation} name="Taco Bell"/>
+        <Restaurant navigation={this.props.navigation} name="Panera"/>
       </View>
     );
   }
