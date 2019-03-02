@@ -5,22 +5,27 @@ var config = require('../config/database');
 const Identity = require('../models/identity');
 
 router.get('/',function(req, res, next){
-    Identity.getNextQP(req.query.rid,()=>{});
-    let newIdentity = new Identity({
-        QRCode: req.query.QRString,
-        username: req.query.username,
-        rid: req.query.rid,
-        QP: req.query.QP
-    });
-    Identity.addIdentity(newIdentity,(err, identity)=>{
+    Identity.getNextQP(req.query.rid,function(err,nextQP){
         if(err){
-            res.json({success: false, msg: 'Failed to insert identity'});
+            console.log('Error when trying to get NextQP');
         }else{
-            res.json({success: true, msh: 'Successfully inserted into identity!'});
+            let newIdentity = new Identity({
+                QRCode: req.query.QRString,
+                username: req.query.username,
+                rid: req.query.rid,
+                QP: nextQP+1
+            });
+            Identity.addIdentity(newIdentity,(err, identity)=>{
+                if(err){
+                    res.json({success: false, msg: 'Failed to insert identity'});
+                }else{
+                    res.json({success: true, msg: 'Successfully inserted into identity!'});
+                }
+            });
+            console.log(newIdentity);
+            console.log('New Identity Added!');
         }
     });
-    console.log(newIdentity);
-    console.log('New Identity Added!');
 });
 
 module.exports = router;
