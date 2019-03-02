@@ -70,7 +70,6 @@ class DetailsScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Details Screen</Text>
         <Restaurant navigation={this.props.navigation} name="Blaze Pizza" />
         <Restaurant navigation={this.props.navigation} name="Taco Bell" />
         <Restaurant navigation={this.props.navigation} name="Panera" />
