@@ -9,7 +9,7 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Button title="login" onPress={() => this.props.navigation.navigate('Details')}/>
+        <Button title="login" onPress={() => this.props.navigation.navigate('Details')} />
       </View>
     );
   }
@@ -26,11 +26,35 @@ class RestaurantScreen extends React.Component {
 }
 
 class ModalScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      test: 'ye'
+    }
+  }
+  componentDidMount() {
+    fetch('http://52.14.110.228:3000/setUser?', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          test: responseJson["username"]
+        })
+
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ fontSize: 30 }}>This is a your check in!</Text>
-        <Qr text="jhfalskdhflksadfsadf"/>
+        <Qr text="jhfalskdhflksadfsadf" />
+        <Text style={{ fontSize: 30 }}>{this.state.test} </Text>
         <Button
           onPress={() => this.props.navigation.goBack()}
           title="Exit Queue"
@@ -45,9 +69,9 @@ class DetailsScreen extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>Details Screen</Text>
-        <Restaurant navigation={this.props.navigation} name="Blaze Pizza"/>
-        <Restaurant navigation={this.props.navigation} name="Taco Bell"/>
-        <Restaurant navigation={this.props.navigation} name="Panera"/>
+        <Restaurant navigation={this.props.navigation} name="Blaze Pizza" />
+        <Restaurant navigation={this.props.navigation} name="Taco Bell" />
+        <Restaurant navigation={this.props.navigation} name="Panera" />
       </View>
     );
   }
