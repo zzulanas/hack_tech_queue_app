@@ -29,11 +29,13 @@ class ModalScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: 'ye'
+      test: 'ye',
+      restAd: 2,
+      qrStr: 'fsiuadghfljkshdgf'
     }
   }
   componentDidMount() {
-    fetch('http://52.14.110.228:3000/setUser?', {
+    fetch(`http://52.14.110.228:3000/setUser?username=${this.state.test}&rid=${this.state.restAd}&QRString=${this.state.qrStr}&QP=43`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
