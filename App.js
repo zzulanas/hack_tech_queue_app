@@ -67,9 +67,35 @@ class ModalScreen extends React.Component {
 }
 
 class DetailsScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: ''
+    }
+  }
+  componentDidMount() {
+    fetch(`https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyD8_SAGyQxwHsDDk7ezhiJmOX6k6mkigO4`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson)
+        this.setState({
+          location: responseJson["location"]
+        })
+
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+  }
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>{JSON.stringify(this.state.location, null, 4)}</Text>
         <Restaurant navigation={this.props.navigation} name="Blaze Pizza" />
         <Restaurant navigation={this.props.navigation} name="Taco Bell" />
         <Restaurant navigation={this.props.navigation} name="Panera" />
