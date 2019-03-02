@@ -8,6 +8,8 @@ var config = require('./config/database');
 
 var indexRouter = require('./routes/index');
 var setNewConnection = require('./routes/newConnection');
+var getQueueRid = require('./routes/getQueueRid');
+var updateQueue = require('./routes/updateQueue');
 
 var app = express();
 
@@ -37,6 +39,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/setUser', setNewConnection);
+app.use('/getQueueRid', getQueueRid);
+app.use('/updateQueue', updateQueue);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
