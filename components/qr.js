@@ -3,13 +3,33 @@ import { Text, View, StyleSheet, TextInput } from 'react-native'
 import QRCode from 'react-native-qrcode';
 
 
+
 export default class Qr extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            test: 'ye'
+        }
     }
+    componentDidMount(){
+        fetch('http://52.14.110.228:3000/howdi', {
+            method:'GET',
+            headers: {
+                'Content-Type': 'application/json',
+              }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+        console.log(responseJson);
+        this.setState({
+            test: responseJson.username
+        })
+    }) 
+}
     render() {
         return (
             <View>
+                <Text>{this.state.test}</Text>
                 <QRCode
                     value={this.props.text}
                     size={300}
