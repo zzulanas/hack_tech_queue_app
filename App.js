@@ -28,17 +28,60 @@ class DetailsScreen extends React.Component {
   }
 }
 
-const AppNavigator = createStackNavigator(
+class RestaurantScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Hey its a restaurant</Text>
+      </View>
+    );
+  }
+}
+
+class ModalScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={{ fontSize: 30 }}>This is a modal!</Text>
+        <Button
+          onPress={() => this.props.navigation.goBack()}
+          title="Dismiss"
+        />
+      </View>
+    );
+  }
+}
+
+const MainStack = createStackNavigator(
   {
-    Home: HomeScreen,
-    Details: DetailsScreen
-  },
-  {
-    initialRouteName: "Home"
+    Home: {
+      screen: HomeScreen,
+    },
+    Details: {
+      screen: DetailsScreen,
+    },
+    Restaurant: {
+      screen: RestaurantScreen,
+    }
   }
 );
 
-const AppContainer = createAppContainer(AppNavigator);
+const RootStack = createStackNavigator(
+  {
+    Main: {
+      screen: MainStack,
+    },
+    MyModal: {
+      screen: ModalScreen,
+    },
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+  }
+);
+
+const AppContainer = createAppContainer(RootStack);
 
 export default class App extends React.Component {
   render() {

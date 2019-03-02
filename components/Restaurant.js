@@ -9,7 +9,7 @@ export class Restaurant extends Component {
       <View>
           <Card title={this.props.name}>
           <Text> Hi welcome to {this.props.name} </Text>
-          <Button title="Get in line!"/>
+          <Button title="Get in line!" onPress={() => this.props.navigation.navigate('Restaurant')}/>
           </Card>
       </View>
     )
