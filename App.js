@@ -17,13 +17,21 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-evenly'
+  },
+  billStyle: {
+    fontSize: 20,
+    textAlign:'center',
+    borderStyle: 'solid',
+    borderWidth: 2,
+    borderColor: '#bdf7ad',
+    borderRadius: 15,
   }
 })
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: 'Useless',
+      text: 'Default',
     }
   }
   render() {
@@ -59,10 +67,10 @@ class RestaurantScreen extends React.Component {
   render() {
     return (
       <ScrollView>
-        <Text>Total Bill: {this.state.totalAmt}</Text>
-        <MenuItem foodName='Lasagna' price={15} picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg'  addTotal={this.addTotalAmount.bind(this)}/>      
-        <MenuItem foodName='Lasagna' price={15} picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' addTotal={this.addTotalAmount.bind(this)} />      
-        <MenuItem foodName='Lasagna' price={15} picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' addTotal={this.addTotalAmount.bind(this)} />
+        <Text style={styles.billStyle}>Total Bill: ${this.state.totalAmt}</Text>
+        <MenuItem foodName='Lasagna' price={15} picture='https://static01.nyt.com/images/2015/10/15/dining/15RECIPE20DIN/15RECIPE20DIN-superJumbo.jpg'  addTotal={this.addTotalAmount.bind(this)}/>      
+        <MenuItem foodName='Lasagna' price={15} picture='https://static01.nyt.com/images/2015/10/15/dining/15RECIPE20DIN/15RECIPE20DIN-superJumbo.jpg' addTotal={this.addTotalAmount.bind(this)} />      
+        <MenuItem foodName='Lasagna' price={15} picture='https://static01.nyt.com/images/2015/10/15/dining/15RECIPE20DIN/15RECIPE20DIN-superJumbo.jpg' addTotal={this.addTotalAmount.bind(this)} />
       </ScrollView>
     );
   }
@@ -102,12 +110,10 @@ class ModalScreen extends React.Component {
   }
   render() {
     return (
-      <View>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly' }}>
         {this.state.restAd == 0 ? <Text>Restaurant does not exist!</Text> : <Qr text={this.state.qrStr} />}
         <Text style={{ fontSize: 30 }}>{this.state.test} </Text>
-        </View>
-        <View>
         <Button
           onPress={() => this.props.navigation.goBack()}
           title="Exit Queue"
@@ -117,7 +123,6 @@ class ModalScreen extends React.Component {
           title="Restaurant Menu"
         />
       </View>
-      </View>
     );
   }
 }
@@ -126,7 +131,9 @@ class DetailsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: ''
+      location: '',
+      lat:'',
+      lon:''
     }
   }
   componentDidMount() {
@@ -139,7 +146,7 @@ class DetailsScreen extends React.Component {
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
-          location: responseJson["location"]
+          location: JSON.stringify(responseJson["location"], null, 4),
         })
 
       })
@@ -152,7 +159,7 @@ class DetailsScreen extends React.Component {
     const username = navigation.getParam('name', 'NO-ID');
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>{JSON.stringify(this.state.location, null, 4)}</Text>
+        <Text>{this.state.location}</Text>
         <Restaurant navigation={this.props.navigation} username={username} name="Blaze Pizza" rid={1} />
         <Restaurant navigation={this.props.navigation} username={username} name="Taco Bell" rid={2} />
         <Restaurant navigation={this.props.navigation} username={username} name="Panera" rid={3} />
