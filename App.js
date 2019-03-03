@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, TextInput } from 'react-native';
-import { Button, Input, List, ListItem } from 'react-native-elements';
+import { ScrollView, View, Text, TextInput, StyleSheet } from 'react-native';
+import { Button, Input, List, ListItem, Divider } from 'react-native-elements';
 import Restaurant from './components/Restaurant';
 import HostRestaurant from './components/HostRestaurant';
 import Qr from './components/qr';
@@ -8,6 +8,17 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import BarcodeScan from './components/barcodeScan';
 import MenuItem from './components/MenuItem';
 
+const styles = StyleSheet.create({
+  buttonStyle: {
+      padding: 100
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
+  }
+})
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -17,32 +28,42 @@ class HomeScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "space-evenly", backgroundColor: 'skyblue' }}>
+      <View style={styles.container}>
         <TextInput containerStyle={{ height: 100 }} placeholder="Customer Username" onChangeText={(text) => this.setState({ text })}></TextInput>
-        <Button title="Customer" onPress={() => this.props.navigation.navigate('Details', {
+          <Button title="Customer" onPress={() => this.props.navigation.navigate('Details', {
           name: this.state.text
         })} />
         <Button title="Host" onPress={() => this.props.navigation.navigate('HostCredentials')} />
       </View>
     );
   }
+  
 }
 
 class RestaurantScreen extends React.Component {
+  
   constructor(props) {
     super(props);
+    this.addTotalAmount = this.addTotalAmount.bind(this);
     this.state = {
-      data: [{ foodName: 'Lasagna', price: '$15', picture: 'https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' }, { foodName: 'Lasagna', price: '$15', picture: 'https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' }, { foodName: 'Lasagna', price: '$15', picture: 'https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' }, { foodName: 'Lasagna', price: '$15', picture: 'https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' }]
+      totalAmt: 0.0
     }
+  }
+  addTotalAmount(price){
+    this.setState({
+      totalAmt: this.state.totalAmt + price
+    })
+    console.log(this.state.totalAmt);
   }
 
   render() {
     return (
-      <View>
-        <MenuItem foodName='Lasagna' price='$15' picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' />      
-        <MenuItem foodName='Lasagna' price='$15' picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' />      
-        <MenuItem foodName='Lasagna' price='$15' picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' />
-      </View>
+      <ScrollView>
+        <Text>Total Bill: {this.state.totalAmt}</Text>
+        <MenuItem foodName='Lasagna' price={15} picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg'  addTotal={this.addTotalAmount.bind(this)}/>      
+        <MenuItem foodName='Lasagna' price={15} picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' addTotal={this.addTotalAmount.bind(this)} />      
+        <MenuItem foodName='Lasagna' price={15} picture='https://www.thewholesomedish.com/wp-content/uploads/2018/07/Best-Lasagna-550.jpg' addTotal={this.addTotalAmount.bind(this)} />
+      </ScrollView>
     );
   }
 }
@@ -81,9 +102,12 @@ class ModalScreen extends React.Component {
   }
   render() {
     return (
+      <View>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         {this.state.restAd == 0 ? <Text>Restaurant does not exist!</Text> : <Qr text={this.state.qrStr} />}
         <Text style={{ fontSize: 30 }}>{this.state.test} </Text>
+        </View>
+        <View>
         <Button
           onPress={() => this.props.navigation.goBack()}
           title="Exit Queue"
@@ -92,6 +116,7 @@ class ModalScreen extends React.Component {
           onPress={() => this.props.navigation.navigate('Restaurant')}
           title="Restaurant Menu"
         />
+      </View>
       </View>
     );
   }
@@ -113,7 +138,6 @@ class DetailsScreen extends React.Component {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson)
         this.setState({
           location: responseJson["location"]
         })
@@ -126,7 +150,6 @@ class DetailsScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const username = navigation.getParam('name', 'NO-ID');
-    console.log(username);
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>{JSON.stringify(this.state.location, null, 4)}</Text>
@@ -163,7 +186,6 @@ class QRScreen extends React.Component {
     super(props);
     const { navigation } = this.props;
     const rid = navigation.getParam('rid', 'NO-RID');
-    console.log(rid);
     this.state = {
       test: rid,
     }
@@ -189,7 +211,6 @@ class QRScreen extends React.Component {
   }*/
 
   render() {
-    console.log('In QRScreen');
     return (
       <BarcodeScan restID={this.state.test} />
     );
@@ -213,7 +234,6 @@ class DetailsHostScreen extends React.Component {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson)
         this.setState({
           location: responseJson["location"]
         })
@@ -226,7 +246,6 @@ class DetailsHostScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const username = navigation.getParam('name', 'NO-ID');
-    console.log(username);
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>{JSON.stringify(this.state.location, null, 4)}</Text>
