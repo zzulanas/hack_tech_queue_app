@@ -13,7 +13,6 @@ router.get('/',function(req, res, next){
                 QRCode: req.query.QRString,
                 username: req.query.username,
                 rid: req.query.rid,
-                QP: nextQP+1
             });
             Identity.addIdentity(newIdentity,(err, identity)=>{
                 if(err){

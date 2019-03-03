@@ -16,9 +16,9 @@ const IdentitySchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    QP:{
-        type: Number,
-        required: true
+    timestamp:{
+        type: Date,
+        default: Date.now
     }
 });
 
