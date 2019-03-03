@@ -2,16 +2,15 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, View } from 'react-native'
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 
-export default class Restaurant extends Component {
+export default class HostRestaurant extends Component {
   render() {
-    const username = this.props.username;
     const rid = this.props.rid;
+    console.log(rid);
     return (
       <View>
           <Card title={this.props.name}>
-          <Text> Hi welcome to {this.props.name} </Text>
-          <Text>{this.props.username}</Text>
-          <Button title="Get in line!" onPress={() => {this.props.navigation.navigate('MyModal',{ username : username, rid: rid})}}/>
+          <Text> Do you work for {this.props.name} </Text>
+          <Button title="I Work Here!" onPress={() => {this.props.navigation.navigate('toQRScanner',{rid : rid})}}/>
           </Card>
       </View>
     )
